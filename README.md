@@ -1,14 +1,18 @@
-activate environment:
-```source venv/bin/activate```
+# John Shivers (Backend Integrations Engineer Take Home Assignment)
 
-install requirements:
-```pip install -r requirements.txt```
+## Setup
 
-change dir => /server:
-```cd server```
+  - activate environment:
+  ```source venv/bin/activate```
 
-apply migrations:
-```python manage.py migrate```
+  - install requirements:
+  ```pip install -r requirements.txt```
 
-start server:
-```python manage.py runserver [port]```
+  - change dir => /server:
+  ```cd server```
+
+  - apply migrations:
+  ```python manage.py migrate```
+
+  - start server:
+  ```python manage.py runserver [port]```
