@@ -20,17 +20,17 @@
   <button type="reset" value="Reset">Reset</button>
 </form>
 
-{% if latest_doctor_list %}
+<h2>Appointments</h2>
+{% if select_appts %}
 <ul>
-  {% for doctor in latest_doctor_list %}
-  <li>Doctor ID: {{doctor.id}} || Date: {{doctor.date}}</li>
-  <a href="/display/{{ doctor.id }}/">{{ doctor.name }}</a>
-  <form action="/delete/{{ doctor.id }}" method="DELETE">
+  {% for appt in select_appts %}
+  <li>Appointment ID: {{appt.id}} || Date: {{appt.date}}</li>
+  <form action="/delete/{{ appt.id }}" method="DELETE">
     {% csrf_token %}
-    <a href=><button type="submit">Delete</button></a>
+    <button type="submit">Delete</button>
   </form>
   {% endfor %}
 </ul>
 {% else %}
-<p>No doctors are available.</p>
+<p>No appts are available.</p>
 {% endif %}

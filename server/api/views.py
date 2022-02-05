@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from .models import Doctor, Appt_Data
 from .forms import ApptForm
 
+
 @require_http_methods(["GET"])
 def index(request):
     return HttpResponse("Hello, world!")
@@ -33,10 +34,25 @@ def get_all_doctors(request):
 def get_select_doctor(request, record_id):
     select_doctor = get_object_or_404(Doctor, pk=record_id)
     select_doctor = dict(
-        select_doctor
+        id=select_doctor.id,
+        first_name=select_doctor.first_name,
+        last_name=select_doctor.last_name,
+        email=select_doctor.email,
     )
+    select_appts = get_list_or_404(Appt_Data, phys_id=select_doctor['id'])
+    formatted_select_appts = [
+        {
+            "id": appt.id,
+            "first_name": appt.first_name,
+            "last_name": appt.last_name,
+            "date": appt.date,
+            "time": appt.time,
+            "kind": appt.kind,
+        }
+        for appt in select_appts
+    ]
     template = loader.get_template("api_template/appt.html")
-    context = {"latest_doctor_list": [select_doctor]}
+    context = {"latest_doctor_list": [select_doctor], "select_appts": [formatted_select_appts]}
 
     return HttpResponse(template.render(context, request))
 
@@ -48,6 +64,8 @@ def create_doctor(request):
     new_record.save()
 
     return HttpResponse("Success doc added")
+
+
 @require_http_methods(["POST"])
 def create_appt(request):
     new_record = ApptForm(request.POST)
