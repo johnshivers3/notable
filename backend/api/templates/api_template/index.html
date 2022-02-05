@@ -1,0 +1,10 @@
+{% if latest_record_list %}
+<ul>
+  {% for record in latest_record_list %}
+  <li>Record ID: {{record.id}} || Date: {{record.date}}</li>
+  <a href="/api/{{ record.id }}/">{{ record.name }}</a>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No records are available.</p>
+{% endif %}
