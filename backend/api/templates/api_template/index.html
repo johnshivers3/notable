@@ -1,8 +1,18 @@
+<form action="/create" method="post">
+  {% csrf_token %}
+  <label for="record_name">Record name:</label>
+  <input type="text" id="record_name" name="record_name"><br><br>
+  <button type="submit" value="Submit">Submit</button>
+  <button type="reset" value="Reset">Reset</button>
+</form>
+
 {% if latest_record_list %}
 <ul>
   {% for record in latest_record_list %}
   <li>Record ID: {{record.id}} || Date: {{record.date}}</li>
-  <a href="/api/{{ record.id }}/">{{ record.name }}</a>
+  <a href="/display/{{ record.id }}/">{{ record.name }}</a>
+  <a href="/delete/{{ record.id }}"><button type="submit" >Delete</button></a>
+  <a href="/update/{{ record.id }}"><button type="submit" >Update</button></a>
   {% endfor %}
 </ul>
 {% else %}
