@@ -5,9 +5,9 @@ app_name = 'api'
 
 urlpatterns = [
     path('',views.index, name="index"),
-    path('create',views.create_record, name="create"),
-    path('display-all',views.get_all_records, name="display-all"),
-    path('display/<int:record_id>',views.get_select_records, name="display"),
-    path('update/<int:record_id>',views.update_record, name="update"),
-    path('delete/<int:record_id>',views.delete_record, name="delete"),
+    path('create/doctor/',views.create_doctor, name="create-doc"),
+    path('create/appt/',views.create_appt, name="create-appt"),
+    path('display-all',views.get_all_doctors, name="display-all"),
+    path('display/<int:record_id>',views.get_select_doctor, name="display"),
+    path('delete/<int:appt_id>',views.delete_appt, name="delete"),
 ]

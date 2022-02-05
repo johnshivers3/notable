@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.views.decorators.http import require_http_methods
-from .models import Record, Record_Data
-from .forms import RecordForm, RecordDataForm
+from .models import Doctor, Appt_Data
+from .forms import ApptForm
 
 @require_http_methods(["GET"])
 def index(request):
@@ -13,55 +13,56 @@ def index(request):
 
 
 @require_http_methods(["GET"])
-def get_all_records(request):
-    record_list = get_list_or_404(Record.objects.order_by("-record_date"))
+def get_all_doctors(request):
+    doctor_list = get_list_or_404(Doctor.objects.order_by("last_name"))
     template = loader.get_template("api_template/index.html")
-    formatted_record_list = [
+    formatted_doctor_list = [
         {
-            "id": record.id,
-            "name": record.record_name,
-            "date": record.record_date,
+            "id": doctor.id,
+            "name": doctor.first_name,
+            "date": doctor.last_name,
+            "email": doctor.email,
         }
-        for record in record_list
+        for doctor in doctor_list
     ]
-    context = {"latest_record_list": formatted_record_list}
+    context = {"latest_doctor_list": formatted_doctor_list}
     return HttpResponse(template.render(context, request))
 
 
 @require_http_methods(["GET"])
-def get_select_records(request, record_id):
-    select_record = get_object_or_404(Record, pk=record_id)
-    select_record = dict(
-        id=select_record.id,
-        name=select_record.record_name,
-        date=select_record.record_date,
+def get_select_doctor(request, record_id):
+    select_doctor = get_object_or_404(Doctor, pk=record_id)
+    select_doctor = dict(
+        select_doctor
     )
-    template = loader.get_template("api_template/index.html")
-    context = {"latest_record_list": [select_record]}
+    template = loader.get_template("api_template/appt.html")
+    context = {"latest_doctor_list": [select_doctor]}
 
     return HttpResponse(template.render(context, request))
 
 
 @require_http_methods(["POST"])
-def create_record(request):
-    new_record = RecordForm(request.POST)
+def create_doctor(request):
+    new_record = Doctor(request.POST)
 
     new_record.save()
 
-    return HttpResponse("create_record")
+    return HttpResponse("Success doc added")
+@require_http_methods(["POST"])
+def create_appt(request):
+    new_record = ApptForm(request.POST)
 
-@require_http_methods(["PUT"])
-def update_record(request, record_id):
-    
-    return HttpResponse("update_record")
+    new_record.save()
+
+    return HttpResponse("Success appt added")
 
 
-@require_http_methods(["GET","DELETE"])
-def delete_record(request, record_id):
+@require_http_methods(["DELETE"])
+def delete_appt(request, appt_id):
 
     try:
-        select_record = get_object_or_404(Record, pk=record_id)
-        select_record.delete()
-        return HttpResponse(f"deleted record : {record_id}")
+        select_appt = get_object_or_404(Appt_Data, pk=appt_id)
+        select_appt.delete()
+        return HttpResponse(f"deleted appt : {appt_id}")
     except:
-        return HttpResponse(f"could not delete record : {record_id}")
+        return HttpResponse(f"could not delete appt : {appt_id}")
